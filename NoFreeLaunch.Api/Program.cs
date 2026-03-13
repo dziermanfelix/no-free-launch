@@ -1,4 +1,5 @@
 using NoFreeLaunch.Api.Clients;
+using NoFreeLaunch.Api.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =
     client.BaseAddress = new Uri("https://api.spacexdata.com/");
 });
 
+builder.Services.AddGraphQLServer().AddQueryType<LaunchQueries>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +23,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGraphQL();
 
 app.MapGet("/spacex/launches", async (ISpaceXLaunchClient client, CancellationToken ct) =>
 {
