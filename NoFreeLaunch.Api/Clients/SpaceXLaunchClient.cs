@@ -1,3 +1,5 @@
+using NoFreeLaunch.Api.Models;
+
 namespace NoFreeLaunch.Api.Clients;
 
 public sealed class SpaceXLaunchClient : ISpaceXLaunchClient

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace NoFreeLaunch.Api.Clients;
+namespace NoFreeLaunch.Api.Models;
 
 public sealed class SpaceXLaunchDto
 {

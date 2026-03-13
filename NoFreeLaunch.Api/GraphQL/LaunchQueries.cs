@@ -1,4 +1,5 @@
 using NoFreeLaunch.Api.Clients;
+using NoFreeLaunch.Api.Models;
 
 namespace NoFreeLaunch.Api.GraphQL;
 
