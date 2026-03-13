@@ -1,0 +1,63 @@
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Rr]elease/
+[Dd]ebug/
+
+# Rider / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+*.DotSettings.user
+
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ASP.NET / IIS
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+*.db
+*.db-shm
+*.db-wal
+
+# Logs and dumps
+logs/
+*.log
+*.tld
+*.dmp
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/packages/
+packages/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Azure / publish artifacts
+*.pubxml
+*.publishsettings
+PublishProfiles/
+
+# User-specific
+*.userprefs
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+*.swp
+*.swo
+
