@@ -27,13 +27,13 @@ app.MapGet("/spacex/launches", async (ISpaceXLaunchClient client, CancellationTo
     return Results.Ok(launches);
 });
 
-app.MapGet("spacex/launches/{id}", async (string id, ISpaceXLaunchClient client, CancellationToken ct) =>
+app.MapGet("/spacex/launches/{id}", async (string id, ISpaceXLaunchClient client, CancellationToken ct) =>
 {
     var launch = await client.GetLaunchByIdAsync(id, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 
-app.MapGet("spacex/launches/number/{number}", async (int number, ISpaceXLaunchClient client, CancellationToken ct) =>
+app.MapGet("/spacex/launches/number/{number}", async (int number, ISpaceXLaunchClient client, CancellationToken ct) =>
 {
     var launch = await client.GetLaunchByFlightNumberAsync(number, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
