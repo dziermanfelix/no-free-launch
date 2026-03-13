@@ -33,4 +33,10 @@ app.MapGet("spacex/launches/{id}", async (string id, ISpaceXLaunchClient client,
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 
+app.MapGet("spacex/launches/number/{number}", async (int number, ISpaceXLaunchClient client, CancellationToken ct) =>
+{
+    var launch = await client.GetLaunchByFlightNumberAsync(number, ct);
+    return launch is not null ? Results.Ok(launch) : Results.NotFound();
+});
+
 app.Run();

@@ -20,4 +20,10 @@ public sealed class SpaceXLaunchClient : ISpaceXLaunchClient
         return await _httpClient.GetFromJsonAsync<SpaceXLaunchDto>($"v5/launches/{id}", cancellationToken);
     }
 
+    public async Task<SpaceXLaunchDto?> GetLaunchByFlightNumberAsync(int flightNumber, CancellationToken cancellationToken = default)
+    {
+        var launches = await GetLaunchesAsync(cancellationToken);
+        return launches.FirstOrDefault(l => l.FlightNumber == flightNumber);
+    }
+
 }

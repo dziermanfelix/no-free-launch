@@ -31,3 +31,4 @@
 /Users/dziermanfelix/Documents/dev/no-free-launch/NoFreeLaunch.Api/obj/Debug/net10.0/NoFreeLaunch.Api.pdb
 /Users/dziermanfelix/Documents/dev/no-free-launch/NoFreeLaunch.Api/obj/Debug/net10.0/NoFreeLaunch.Api.genruntimeconfig.cache
 /Users/dziermanfelix/Documents/dev/no-free-launch/NoFreeLaunch.Api/obj/Debug/net10.0/ref/NoFreeLaunch.Api.dll
+/Users/dziermanfelix/Documents/dev/no-free-launch/NoFreeLaunch.Api/obj/Debug/net10.0/NoFreeLaunch.Api.sourcelink.json
