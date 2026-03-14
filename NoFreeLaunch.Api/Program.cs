@@ -38,7 +38,7 @@ app.UseHttpsRedirection();
 
 app.MapGraphQL();
 
-app.MapPost("launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbContext context, CancellationToken ct) =>
+app.MapPost("/launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbContext context, CancellationToken ct) =>
 {
     var fromApi = await client.GetLaunchesAsync(ct);
     var existingIds = await context.Launches.Select(l => l.Id).ToListAsync(ct);
@@ -55,21 +55,21 @@ app.MapPost("launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbCo
     return Results.Ok(new { added = toInsert.Count, total = await context.Launches.CountAsync(ct) });
 });
 
-app.MapGet("/spacex/launches", async (ISpaceXLaunchClient client, CancellationToken ct) =>
+app.MapGet("/spacex/launches", async (NoFreeLaunchDbContext context, CancellationToken ct) =>
 {
-    var launches = await client.GetLaunchesAsync(ct);
+    var launches = await context.Launches.OrderBy(l => l.FlightNumber).ToListAsync(ct);
     return Results.Ok(launches);
 });
 
-app.MapGet("/spacex/launches/{id}", async (string id, ISpaceXLaunchClient client, CancellationToken ct) =>
+app.MapGet("/spacex/launches/{id}", async (string id, NoFreeLaunchDbContext context, CancellationToken ct) =>
 {
-    var launch = await client.GetLaunchByIdAsync(id, ct);
+    var launch = await context.Launches.FirstOrDefaultAsync(l => l.Id == id, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 
-app.MapGet("/spacex/launches/number/{number}", async (int number, ISpaceXLaunchClient client, CancellationToken ct) =>
+app.MapGet("/spacex/launches/number/{number}", async (int number, NoFreeLaunchDbContext context, CancellationToken ct) =>
 {
-    var launch = await client.GetLaunchByFlightNumberAsync(number, ct);
+    var launch = await context.Launches.FirstOrDefaultAsync(l => l.FlightNumber == number, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 

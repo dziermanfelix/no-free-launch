@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using NoFreeLaunch.Api.Clients;
+using NoFreeLaunch.Api.Data;
 using NoFreeLaunch.Api.Data.Entities;
 using NoFreeLaunch.Api.Models;
 using NoFreeLaunch.Api.Services;
@@ -7,22 +9,22 @@ namespace NoFreeLaunch.Api.GraphQL;
 
 public class LaunchQueries
 {
-    public async Task<IEnumerable<SpaceXLaunchDto>> GetLaunchesAsync(
-        [Service] ISpaceXLaunchClient client,
+    public async Task<IEnumerable<Launch>> GetLaunchesAsync(
+        [Service] NoFreeLaunchDbContext context,
         CancellationToken cancellationToken)
-        => await client.GetLaunchesAsync(cancellationToken);
+        => await context.Launches.OrderBy(l => l.FlightNumber).ToListAsync(cancellationToken);
 
-    public async Task<SpaceXLaunchDto?> GetLaunchAsync(
+    public async Task<Launch?> GetLaunchAsync(
         string id,
-        [Service] ISpaceXLaunchClient client,
+        [Service] NoFreeLaunchDbContext context,
         CancellationToken cancellationToken)
-        => await client.GetLaunchByIdAsync(id, cancellationToken);
+        => await context.Launches.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
 
-    public async Task<SpaceXLaunchDto?> GetLaunchByFlightNumberAsync(
+    public async Task<Launch?> GetLaunchByFlightNumberAsync(
         int flightNumber,
-        [Service] ISpaceXLaunchClient client,
+        [Service] NoFreeLaunchDbContext context,
         CancellationToken cancellationToken)
-        => await client.GetLaunchByFlightNumberAsync(flightNumber, cancellationToken);
+        => await context.Launches.FirstOrDefaultAsync(l => l.FlightNumber == flightNumber, cancellationToken);
 
     public async Task<IReadOnlyList<Favorite>> GetFavoritesAsync(
         string userId,
