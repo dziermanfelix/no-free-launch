@@ -2,6 +2,7 @@ using NoFreeLaunch.Api.Clients;
 using NoFreeLaunch.Api.GraphQL;
 using Microsoft.EntityFrameworkCore;
 using NoFreeLaunch.Api.Data;
+using NoFreeLaunch.Api.Data.Entities;
 using NoFreeLaunch.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,23 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGraphQL();
+
+app.MapPost("launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbContext context, CancellationToken ct) =>
+{
+    var fromApi = await client.GetLaunchesAsync(ct);
+    var existingIds = await context.Launches.Select(l => l.Id).ToListAsync(ct);
+    var toInsert = fromApi.Where(dto => !string.IsNullOrEmpty(dto.Id) && !existingIds.Contains(dto.Id)).Select(dto => new Launch
+    {
+        Id = dto.Id!,
+        Name = dto.Name,
+        FlightNumber = dto.FlightNumber,
+        DateUtc = dto.DateUtc,
+        FetchedAt = DateTime.UtcNow
+    }).ToList();
+    context.Launches.AddRange(toInsert);
+    await context.SaveChangesAsync(ct);
+    return Results.Ok(new { added = toInsert.Count, total = await context.Launches.CountAsync(ct) });
+});
 
 app.MapGet("/spacex/launches", async (ISpaceXLaunchClient client, CancellationToken ct) =>
 {
