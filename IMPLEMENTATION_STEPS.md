@@ -44,6 +44,24 @@ Use this with the main plan. Each step is something **you** implement; the step 
 - Install Docker Desktop (if not already). Pull and run SQL Server for Linux (e.g. `mcr.microsoft.com/mssql/server:2022-latest`) with required env vars (`ACCEPT_EULA`, `MSSQL_SA_PASSWORD`). Expose port 1433.
 - Connect with a SQL client (Azure Data Studio, SSMS, or `sqlcmd`) and confirm you can run a simple query. Note the connection string (server, user, password, database name).
 
+notes:
+
+docker run --platform linux/amd64 \
+
+  -e "ACCEPT_EULA=Y" \
+
+  -e "MSSQL_SA_PASSWORD=PW" \
+
+  -p 1433:1433 \
+
+  --name mysqlserver \
+
+  -d mcr.microsoft.com/mssql/server:2025-CU1-ubuntu-24.04
+
+connection string:
+
+**Server=127.0.0.1,1433;User Id=sa;Password=PW;Database=master;TrustServerCertificate=True;**
+
 ### 2.2 – Database schema
 
 - Create a database (e.g. `NoFreeLaunchDb`). Design one or two tables, e.g. `Favorites` (e.g. `Id`, `LaunchId`, `UserId` or `CreatedAt`) or `SavedLaunches` with a similar idea. Add a primary key; add an index on `LaunchId` (and `UserId` if you have it) for lookups.
