@@ -20,7 +20,10 @@ builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =
     client.BaseAddress = new Uri("https://api.spacexdata.com/");
 });
 
-builder.Services.AddGraphQLServer().AddQueryType<LaunchQueries>();
+builder.Services
+.AddGraphQLServer()
+.AddQueryType<LaunchQueries>()
+.AddMutationType<FavoritesMutations>();
 
 var app = builder.Build();
 
