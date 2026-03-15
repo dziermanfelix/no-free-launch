@@ -10,6 +10,7 @@ public class NoFreeLaunchDbContext : DbContext
 
     public DbSet<Launch> Launches => Set<Launch>();
     public DbSet<Favorite> Favorites => Set<Favorite>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

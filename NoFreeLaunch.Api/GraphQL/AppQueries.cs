@@ -29,4 +29,9 @@ public class AppQueries
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
         => await favorites.GetFavoritesForUserAsync(userId, cancellationToken);
+
+    public async Task<IReadOnlyList<User>> GetUsersAsync(
+        [Service] IUsersService users,
+        CancellationToken cancellationToken)
+        => await users.GetUsersAsync(cancellationToken);
 }

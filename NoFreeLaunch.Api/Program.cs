@@ -11,6 +11,7 @@ builder.Services.AddDbContext<NoFreeLaunchDbContext>(options =>
 
 builder.Services.AddScoped<IFavoritesService, FavoritesService>();
 builder.Services.AddScoped<ILaunchesService, LaunchesService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddOpenApi();
 
