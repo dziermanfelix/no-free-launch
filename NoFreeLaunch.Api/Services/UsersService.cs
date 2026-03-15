@@ -15,6 +15,9 @@ public class UsersService : IUsersService
 
     public async Task CreateUserAsync(string userName, CancellationToken cancellationToken = default)
     {
+        bool exists = await _context.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
+        if (exists)
+            throw new InvalidOperationException("A user with that name already exists.");
         _context.Users.Add(new User { UserName = userName });
         await _context.SaveChangesAsync(cancellationToken);
     }

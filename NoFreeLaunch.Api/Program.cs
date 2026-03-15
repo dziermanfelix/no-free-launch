@@ -33,7 +33,9 @@ builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =
 builder.Services
 .AddGraphQLServer()
 .AddQueryType<AppQueries>()
-.AddMutationType<AppMutations>();
+.AddMutationType<AppMutations>()
+.AddErrorFilter<ExceptionMessageErrorFilter>()
+.ModifyRequestOptions(o => o.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
 var app = builder.Build();
 
