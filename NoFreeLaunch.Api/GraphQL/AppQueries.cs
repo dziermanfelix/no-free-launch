@@ -34,4 +34,11 @@ public class AppQueries
         [Service] IUsersService users,
         CancellationToken cancellationToken)
         => await users.GetUsersAsync(cancellationToken);
+
+    public async Task<User?> GetUserByNameAsync(
+        string userName,
+        [Service] IUsersService users,
+        CancellationToken cancellationToken)
+        => await users.GetUserByNameAsync(userName, cancellationToken);
+
 }

@@ -33,4 +33,9 @@ public class UsersService : IUsersService
     {
         return await _context.Users.OrderBy(l => l.UserName).ToListAsync(cancellationToken);
     }
+
+    public async Task<User?> GetUserByNameAsync(string userName, CancellationToken cancellationToken)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
+    }
 }

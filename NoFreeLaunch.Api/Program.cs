@@ -15,6 +15,16 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =>
 {
     client.BaseAddress = new Uri("https://api.spacexdata.com/");
@@ -36,6 +46,8 @@ else
 {
     app.UseHttpsRedirection();
 }
+
+app.UseCors("AllowFrontend");
 
 app.MapGraphQL();
 
