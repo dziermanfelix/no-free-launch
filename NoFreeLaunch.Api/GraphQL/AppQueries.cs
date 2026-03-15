@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using NoFreeLaunch.Api.Clients;
 using NoFreeLaunch.Api.Data;
 using NoFreeLaunch.Api.Data.Entities;
-using NoFreeLaunch.Api.Models;
 using NoFreeLaunch.Api.Services;
 
 namespace NoFreeLaunch.Api.GraphQL;

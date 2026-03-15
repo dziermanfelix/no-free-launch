@@ -2,7 +2,6 @@ using NoFreeLaunch.Api.Clients;
 using NoFreeLaunch.Api.GraphQL;
 using Microsoft.EntityFrameworkCore;
 using NoFreeLaunch.Api.Data;
-using NoFreeLaunch.Api.Data.Entities;
 using NoFreeLaunch.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +12,6 @@ builder.Services.AddDbContext<NoFreeLaunchDbContext>(options =>
 builder.Services.AddScoped<IFavoritesService, FavoritesService>();
 builder.Services.AddScoped<ILaunchesService, LaunchesService>();
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =>
@@ -29,7 +26,6 @@ builder.Services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
