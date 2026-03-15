@@ -7,7 +7,7 @@ using NoFreeLaunch.Api.Services;
 
 namespace NoFreeLaunch.Api.GraphQL;
 
-public class LaunchQueries
+public class AppQueries
 {
     public async Task<IEnumerable<Launch>> GetLaunchesAsync(
         [Service] NoFreeLaunchDbContext context,

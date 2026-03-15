@@ -3,7 +3,7 @@ namespace NoFreeLaunch.Api.GraphQL;
 using NoFreeLaunch.Api.Services;
 using NoFreeLaunch.Api.Data.Entities;
 
-public class FavoritesMutations
+public class AppMutations
 {
     public async Task<bool> AddFavoriteAsync(
         string launchId,

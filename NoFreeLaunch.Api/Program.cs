@@ -23,8 +23,8 @@ builder.Services.AddHttpClient<ISpaceXLaunchClient, SpaceXLaunchClient>(client =
 
 builder.Services
 .AddGraphQLServer()
-.AddQueryType<LaunchQueries>()
-.AddMutationType<FavoritesMutations>();
+.AddQueryType<AppQueries>()
+.AddMutationType<AppMutations>();
 
 var app = builder.Build();
 
