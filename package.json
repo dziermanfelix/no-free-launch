@@ -1,0 +1,24 @@
+{
+  "name": "no-free-launch",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/dziermanfelix/no-free-launch#readme",
+  "bugs": {
+    "url": "https://github.com/dziermanfelix/no-free-launch/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dziermanfelix/no-free-launch.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --kill-others \"dotnet run --project NoFreeLaunch.Api\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
