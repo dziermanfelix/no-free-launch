@@ -11,12 +11,22 @@ CREATE TABLE dbo.Launches (
 );
 GO
 
+CREATE TABLE dbo.Users (
+    Id INT IDENTITY(1,1) NOT NULL,
+    UserName NVARCHAR(128) NOT NULL,
+    CreatedAt DATETIME2(7) NOT NULL DEFAULT (GETUTCDATE()),
+    CONSTRAINT PK_Users PRIMARY KEY (Id),
+    CONSTRAINT UQ_Users_UserName UNIQUE (UserName)
+);
+GO
+
 CREATE TABLE dbo.Favorites (
     Id INT IDENTITY(1,1) NOT NULL,
     LaunchId NVARCHAR(50) NOT NULL,
-    UserId NVARCHAR(128) NOT NULL,
+    UserId INT NOT NULL,
     CreatedAt DATETIME2(7) NOT NULL DEFAULT (GETUTCDATE()),
     CONSTRAINT PK_Favorites PRIMARY KEY (Id),
+    CONSTRAINT FK_Favorites_Users FOREIGN KEY (UserId) REFERENCES dbo.Users(Id) ON DELETE CASCADE,
     CONSTRAINT FK_Favorites_Launches FOREIGN KEY (LaunchId) REFERENCES dbo.Launches(Id) ON DELETE CASCADE,
     CONSTRAINT UQ_Favorites_LaunchId_UserId UNIQUE (LaunchId, UserId)
 );
@@ -24,6 +34,7 @@ GO
 
 CREATE INDEX IX_Launches_FlightNumber ON dbo.Launches(FlightNumber);
 CREATE INDEX IX_Launches_DateUtc ON dbo.Launches(DateUtc);
+CREATE INDEX IX_Users_UserName ON dbo.Users(UserName);
 CREATE INDEX IX_Favorites_LaunchId ON dbo.Favorites(LaunchId);
 CREATE INDEX IX_Favorites_UserId ON dbo.Favorites(UserId);
 GO

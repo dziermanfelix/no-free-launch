@@ -3,7 +3,7 @@ GO
 
 CREATE OR ALTER PROCEDURE dbo.AddFavorite
     @LaunchId NVARCHAR(50),
-    @UserId NVARCHAR(128)
+    @UserId INT
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -15,7 +15,7 @@ GO
 
 CREATE OR ALTER PROCEDURE dbo.RemoveFavorite
     @LaunchId NVARCHAR(50),
-    @UserId NVARCHAR(128)
+    @UserId INT
 AS
 BEGIN
     SET NOCOUNT ON;
