@@ -13,13 +13,14 @@ public class UsersService : IUsersService
         _context = context;
     }
 
-    public async Task CreateUserAsync(string userName, CancellationToken cancellationToken = default)
+    public async Task<User> CreateUserAsync(string userName, CancellationToken cancellationToken = default)
     {
         bool exists = await _context.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
         if (exists)
             throw new InvalidOperationException("A user with that name already exists.");
-        _context.Users.Add(new User { UserName = userName });
+        var user = await _context.Users.AddAsync(new User { UserName = userName }, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+        return user.Entity;
     }
 
     public async Task DeleteUserAsync(string userName, CancellationToken cancellationToken = default)

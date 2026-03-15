@@ -1,16 +1,16 @@
 namespace NoFreeLaunch.Api.GraphQL;
 
 using NoFreeLaunch.Api.Services;
+using NoFreeLaunch.Api.Data.Entities;
 
 public class AppMutations
 {
-    public async Task<bool> CreateUserAsync(
+    public async Task<User> CreateUserAsync(
         string userName,
         [Service] IUsersService users,
         CancellationToken cancellationToken)
     {
-        await users.CreateUserAsync(userName, cancellationToken);
-        return true;
+        return await users.CreateUserAsync(userName, cancellationToken);
     }
 
     public async Task<bool> DeleteUserAsync(
