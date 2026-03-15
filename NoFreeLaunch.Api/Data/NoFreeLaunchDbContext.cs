@@ -19,6 +19,12 @@ public class NoFreeLaunchDbContext : DbContext
             e.HasKey(x => x.Id);
         });
 
+        modelBuilder.Entity<User>(e =>
+        {
+            e.ToTable("Users");
+            e.HasKey(x => x.Id);
+        });
+
         modelBuilder.Entity<Favorite>(e =>
         {
             e.ToTable("Favorites");
@@ -27,6 +33,10 @@ public class NoFreeLaunchDbContext : DbContext
             e.HasOne(x => x.Launch)
              .WithMany(x => x.Favorites)
              .HasForeignKey(x => x.LaunchId)
+             .OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.User)
+             .WithMany(x => x.Favorites)
+             .HasForeignKey(x => x.UserId)
              .OnDelete(DeleteBehavior.Cascade);
         });
     }

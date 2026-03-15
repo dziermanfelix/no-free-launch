@@ -25,7 +25,7 @@ public class AppQueries
         => await context.Launches.FirstOrDefaultAsync(l => l.FlightNumber == flightNumber, cancellationToken);
 
     public async Task<IReadOnlyList<Favorite>> GetFavoritesAsync(
-        string userId,
+        int userId,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
         => await favorites.GetFavoritesForUserAsync(userId, cancellationToken);

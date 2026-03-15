@@ -14,7 +14,7 @@ public class FavoritesService : IFavoritesService
         _context = context;
     }
 
-    public async Task AddFavoriteAsync(string launchId, string userId, CancellationToken cancellationToken = default)
+    public async Task AddFavoriteAsync(string launchId, int userId, CancellationToken cancellationToken = default)
     {
         await _context.Database.ExecuteSqlRawAsync(
             "EXEC dbo.AddFavorite @LaunchId, @UserId",
@@ -22,7 +22,7 @@ public class FavoritesService : IFavoritesService
             cancellationToken);
     }
 
-    public async Task RemoveFavoriteAsync(string launchId, string userId, CancellationToken cancellationToken = default)
+    public async Task RemoveFavoriteAsync(string launchId, int userId, CancellationToken cancellationToken = default)
     {
         await _context.Database.ExecuteSqlRawAsync(
             "EXEC dbo.RemoveFavorite @LaunchId, @UserId",
@@ -30,7 +30,7 @@ public class FavoritesService : IFavoritesService
             cancellationToken);
     }
 
-    public async Task<IReadOnlyList<Favorite>> GetFavoritesForUserAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Favorite>> GetFavoritesForUserAsync(int userId, CancellationToken cancellationToken = default)
     {
         return await _context.Favorites
             .Where(f => f.UserId == userId)

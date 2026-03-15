@@ -1,13 +1,12 @@
 namespace NoFreeLaunch.Api.GraphQL;
 
 using NoFreeLaunch.Api.Services;
-using NoFreeLaunch.Api.Data.Entities;
 
 public class AppMutations
 {
     public async Task<bool> AddFavoriteAsync(
         string launchId,
-        string userId,
+        int userId,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
     {
@@ -17,7 +16,7 @@ public class AppMutations
 
     public async Task<bool> RemoveFavoriteAsync(
         string launchId,
-        string userId,
+        int userId,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
     {

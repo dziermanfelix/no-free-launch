@@ -28,10 +28,13 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.MapOpenApi();
 }
-
-app.UseHttpsRedirection();
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.MapGraphQL();
 
@@ -59,7 +62,7 @@ app.MapGet("/spacex/launches/number/{number}", async (int number, ILaunchesServi
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 
-app.MapGet("/favorites/{userId}", async (string userId, IFavoritesService favorites, CancellationToken ct) =>
+app.MapGet("/favorites/{userId}", async (int userId, IFavoritesService favorites, CancellationToken ct) =>
 {
     var list = await favorites.GetFavoritesForUserAsync(userId, ct);
     return Results.Ok(list);
