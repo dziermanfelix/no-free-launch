@@ -39,21 +39,10 @@ app.UseHttpsRedirection();
 
 app.MapGraphQL();
 
-app.MapPost("/launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbContext context, CancellationToken ct) =>
+app.MapPost("launches/sync", async (ISpaceXLaunchClient client, ILaunchesService launches, CancellationToken ct) =>
 {
-    var fromApi = await client.GetLaunchesAsync(ct);
-    var existingIds = await context.Launches.Select(l => l.Id).ToListAsync(ct);
-    var toInsert = fromApi.Where(dto => !string.IsNullOrEmpty(dto.Id) && !existingIds.Contains(dto.Id)).Select(dto => new Launch
-    {
-        Id = dto.Id!,
-        Name = dto.Name,
-        FlightNumber = dto.FlightNumber,
-        DateUtc = dto.DateUtc,
-        FetchedAt = DateTime.UtcNow
-    }).ToList();
-    context.Launches.AddRange(toInsert);
-    await context.SaveChangesAsync(ct);
-    return Results.Ok(new { added = toInsert.Count, total = await context.Launches.CountAsync(ct) });
+    var result = await launches.LaunchesSyncAsync(client, ct);
+    return Results.Ok(result);
 });
 
 app.MapGet("/spacex/launches", async (ILaunchesService launches, CancellationToken ct) =>
