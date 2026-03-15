@@ -11,6 +11,7 @@ builder.Services.AddDbContext<NoFreeLaunchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IFavoritesService, FavoritesService>();
+builder.Services.AddScoped<ILaunchesService, LaunchesService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -55,21 +56,21 @@ app.MapPost("/launches/sync", async (ISpaceXLaunchClient client, NoFreeLaunchDbC
     return Results.Ok(new { added = toInsert.Count, total = await context.Launches.CountAsync(ct) });
 });
 
-app.MapGet("/spacex/launches", async (NoFreeLaunchDbContext context, CancellationToken ct) =>
+app.MapGet("/spacex/launches", async (ILaunchesService launches, CancellationToken ct) =>
 {
-    var launches = await context.Launches.OrderBy(l => l.FlightNumber).ToListAsync(ct);
-    return Results.Ok(launches);
+    var list = await launches.GetLaunchesAsync(ct);
+    return Results.Ok(list);
 });
 
-app.MapGet("/spacex/launches/{id}", async (string id, NoFreeLaunchDbContext context, CancellationToken ct) =>
+app.MapGet("/spacex/launches/{id}", async (string id, ILaunchesService launches, CancellationToken ct) =>
 {
-    var launch = await context.Launches.FirstOrDefaultAsync(l => l.Id == id, ct);
+    var launch = await launches.GetLaunchAsync(id, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 
-app.MapGet("/spacex/launches/number/{number}", async (int number, NoFreeLaunchDbContext context, CancellationToken ct) =>
+app.MapGet("/spacex/launches/number/{number}", async (int number, ILaunchesService launches, CancellationToken ct) =>
 {
-    var launch = await context.Launches.FirstOrDefaultAsync(l => l.FlightNumber == number, ct);
+    var launch = await launches.GetLaunchByFlightNumberAsync(number, ct);
     return launch is not null ? Results.Ok(launch) : Results.NotFound();
 });
 

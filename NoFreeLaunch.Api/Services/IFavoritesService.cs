@@ -1,6 +1,6 @@
-using NoFreeLaunch.Api.Data.Entities;
-
 namespace NoFreeLaunch.Api.Services;
+
+using NoFreeLaunch.Api.Data.Entities;
 
 public interface IFavoritesService
 {
