@@ -12,7 +12,7 @@ export const GET_LAUNCHES = gql`
 `;
 
 export const GET_LAUNCH_BY_ID = gql`
-  query GetLaunch($id: String!) {
+  query GetLaunchById($id: String!) {
     launch(id: $id) {
       id
       flightNumber
@@ -23,7 +23,7 @@ export const GET_LAUNCH_BY_ID = gql`
 `;
 
 export const GET_LAUNCH_BY_FLIGHT_NUMBER = gql`
-  query GetLaunch($flightNumber: Int!) {
+  query GetLaunchByFlightNumber($flightNumber: Int!) {
     launchByFlightNumber(flightNumber: $flightNumber) {
       id
       flightNumber

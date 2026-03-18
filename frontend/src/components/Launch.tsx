@@ -1,21 +1,23 @@
 import { useQuery } from '@apollo/client/react';
 import { GET_LAUNCH_BY_FLIGHT_NUMBER, GET_LAUNCH_BY_ID } from '../graphql/queries';
 import type { GetLaunchData } from '../types/graphql';
+import { useParams } from 'react-router-dom';
 
-interface LaunchProps {
-  id: string | null;
-  flightNumber: number | null;
-}
+export default function Launch() {
+  const { id, flightNumber } = useParams<{
+    id?: string;
+    flightNumber?: string;
+  }>();
 
-export default function Launch({ id = null, flightNumber = null }: LaunchProps) {
-  const queryById = id !== null;
+  const queryById = id !== undefined;
+  const flightNumberValue = flightNumber ? parseInt(flightNumber) : null;
 
   const {
     data: dataById,
     loading: loadingById,
     error: errorById,
   } = useQuery<GetLaunchData>(GET_LAUNCH_BY_ID, {
-    variables: { id },
+    variables: { id: id ?? '' },
     skip: !queryById,
   });
 
@@ -24,17 +26,17 @@ export default function Launch({ id = null, flightNumber = null }: LaunchProps) 
     loading: loadingByFlightNumber,
     error: errorByFlightNumber,
   } = useQuery<GetLaunchData>(GET_LAUNCH_BY_FLIGHT_NUMBER, {
-    variables: { flightNumber },
+    variables: { flightNumber: flightNumberValue ?? 0 },
     skip: queryById,
   });
 
-  const loading = id ? loadingById : loadingByFlightNumber;
-  const error = id ? errorById : errorByFlightNumber;
+  const loading = queryById ? loadingById : loadingByFlightNumber;
+  const error = queryById ? errorById : errorByFlightNumber;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const launch = id ? dataById?.launch : dataByFlightNumber?.launchByFlightNumber;
+  const launch = queryById ? dataById?.launch : dataByFlightNumber?.launchByFlightNumber;
 
   return (
     <div>
