@@ -1,14 +1,20 @@
 import './Launches.css';
 import { useQuery } from '@apollo/client/react';
-import { GET_LAUNCHES } from '../graphql/queries';
-import type { GetLaunchesData } from '../types/graphql';
+import { GET_FAVORITES, GET_LAUNCHES } from '../graphql/queries';
+import type { GetFavoritesData, GetLaunchesData } from '../types/graphql';
 import { formatDateString } from '../util/date';
 
 export default function Launches() {
   const { data, loading, error } = useQuery<GetLaunchesData>(GET_LAUNCHES);
+  // TODO get current user
+  const userId = 1;
+  const { data: favoritesData } = useQuery<GetFavoritesData>(GET_FAVORITES, {
+    variables: { userId },
+  });
+  const favorites = favoritesData?.favorites ?? [];
   const launches = data?.launches || [];
 
-  const handleFavorite = (launchId: string) => {
+  const handleFavoriteClick = (launchId: string) => {
     console.log(`Favorite clicked for launch: ${launchId}`);
   };
 
@@ -21,7 +27,12 @@ export default function Launches() {
         {launches.map((launch) => (
           <li key={launch.id} className='launches-row'>
             <div className='launches-row-inner'>
-              <input className='launches-fav' type='checkbox' onClick={() => handleFavorite(launch.id)} />
+              <input
+                className='launches-fav'
+                type='checkbox'
+                checked={favorites.some((f) => f.launchId === launch.id)}
+                onChange={() => handleFavoriteClick(launch.id)}
+              />
               <div className='launches-details'>
                 <span>{launch.flightNumber ?? 'Unknown Flight Number'}</span>
                 <span>{launch.name ?? 'Unknown Name'}</span>
