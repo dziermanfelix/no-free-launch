@@ -1,0 +1,41 @@
+.launches {
+  width: 100%;
+}
+
+.launches-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border, #2e303a);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.launches-row {
+  border-bottom: 1px solid var(--border, #2e303a);
+}
+
+.launches-row:last-child {
+  border-bottom: 0;
+}
+
+.launches-row-inner {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 10px 12px;
+  user-select: none;
+}
+
+.launches-fav {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.launches-details {
+  display: flex;
+  gap: 10px;
+  flex: 1 1 auto;
+}

@@ -1,0 +1,23 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.launches-container {
+  overflow-y: scroll;
+  width: 100%;
+  height: 50%;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+.view-all-launches-button {
+  margin-top: 5px;
+  width: 10rem;
+  text-align: center;
+  align-items: right;
+  align-self: flex-end;
+  cursor: pointer;
+}
