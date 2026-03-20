@@ -55,7 +55,7 @@ export const GET_USERS = gql`
 
 export const GET_USER_BY_NAME = gql`
   query GetUserByName($userName: String!) {
-    user(userName: $userName) {
+    user(userByName: $userName) {
       id
       userName
     }
