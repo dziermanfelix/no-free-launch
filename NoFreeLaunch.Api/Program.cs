@@ -14,6 +14,7 @@ builder.Services.AddScoped<ILaunchesService, LaunchesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -52,35 +53,6 @@ else
 app.UseCors("AllowFrontend");
 
 app.MapGraphQL();
-
-app.MapPost("launches/sync", async (ISpaceXLaunchClient client, ILaunchesService launches, CancellationToken ct) =>
-{
-    var result = await launches.LaunchesSyncAsync(client, ct);
-    return Results.Ok(result);
-});
-
-app.MapGet("/spacex/launches", async (ILaunchesService launches, CancellationToken ct) =>
-{
-    var list = await launches.GetLaunchesAsync(ct);
-    return Results.Ok(list);
-});
-
-app.MapGet("/spacex/launches/{id}", async (string id, ILaunchesService launches, CancellationToken ct) =>
-{
-    var launch = await launches.GetLaunchAsync(id, ct);
-    return launch is not null ? Results.Ok(launch) : Results.NotFound();
-});
-
-app.MapGet("/spacex/launches/number/{number}", async (int number, ILaunchesService launches, CancellationToken ct) =>
-{
-    var launch = await launches.GetLaunchByFlightNumberAsync(number, ct);
-    return launch is not null ? Results.Ok(launch) : Results.NotFound();
-});
-
-app.MapGet("/favorites/{userId}", async (int userId, IFavoritesService favorites, CancellationToken ct) =>
-{
-    var list = await favorites.GetFavoritesForUserAsync(userId, ct);
-    return Results.Ok(list);
-});
+app.MapControllers();
 
 app.Run();
