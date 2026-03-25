@@ -24,6 +24,7 @@ public class NoFreeLaunchDbContext : DbContext
         {
             e.ToTable("Users");
             e.HasKey(x => x.Id);
+            e.HasIndex(x => x.UserName).IsUnique();
         });
 
         modelBuilder.Entity<Favorite>(e =>
