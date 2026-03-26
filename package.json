@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently --kill-others \"dotnet run --project NoFreeLaunch.Api\" \"npm run dev --prefix frontend\""
+    "dev": "concurrently --kill-others \"bash -lc 'set -a; source NoFreeLaunch.Api/.env; set +a; dotnet run --project NoFreeLaunch.Api'\" \"npm run dev --prefix frontend\""
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
