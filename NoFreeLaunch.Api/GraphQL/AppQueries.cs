@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using NoFreeLaunch.Api.Data;
 using NoFreeLaunch.Api.Data.Entities;
 using NoFreeLaunch.Api.Services;
+using System.Security.Claims;
 
 namespace NoFreeLaunch.Api.GraphQL;
 
@@ -25,10 +26,13 @@ public class AppQueries
         => await context.Launches.FirstOrDefaultAsync(l => l.FlightNumber == flightNumber, cancellationToken);
 
     public async Task<IReadOnlyList<Favorite>> GetFavoritesAsync(
-        int userId,
+        ClaimsPrincipal user,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
-        => await favorites.GetFavoritesForUserAsync(userId, cancellationToken);
+    {
+        var userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        return await favorites.GetFavoritesForUserAsync(userId, cancellationToken);
+    }
 
     public async Task<IReadOnlyList<User>> GetUsersAsync(
         [Service] IUsersService users,

@@ -2,6 +2,7 @@ namespace NoFreeLaunch.Api.GraphQL;
 
 using NoFreeLaunch.Api.Services;
 using NoFreeLaunch.Api.Data.Entities;
+using System.Security.Claims;
 
 public class AppMutations
 {
@@ -24,20 +25,22 @@ public class AppMutations
 
     public async Task<bool> AddFavoriteAsync(
         string launchId,
-        int userId,
+        ClaimsPrincipal user,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
     {
+        var userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await favorites.AddFavoriteAsync(launchId, userId, cancellationToken);
         return true;
     }
 
     public async Task<bool> RemoveFavoriteAsync(
         string launchId,
-        int userId,
+        ClaimsPrincipal user,
         [Service] IFavoritesService favorites,
         CancellationToken cancellationToken)
     {
+        var userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await favorites.RemoveFavoriteAsync(launchId, userId, cancellationToken);
         return true;
     }
