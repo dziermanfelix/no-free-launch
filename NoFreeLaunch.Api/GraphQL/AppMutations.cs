@@ -41,4 +41,24 @@ public class AppMutations
         await favorites.RemoveFavoriteAsync(launchId, userId, cancellationToken);
         return true;
     }
+
+    public async Task<AuthPayload> RegisterAsync(
+        string userName,
+        string password,
+        [Service] IAuthService auth,
+        CancellationToken cancellationToken)
+    {
+        var (user, token) = await auth.RegisterAsync(userName, password, cancellationToken);
+        return new AuthPayload { User = user, Token = token };
+    }
+
+    public async Task<AuthPayload> LoginAsync(
+        string userName,
+        string password,
+        [Service] IAuthService auth,
+        CancellationToken cancellationToken)
+    {
+        var (user, token) = await auth.LoginAsync(userName, password, cancellationToken);
+        return new AuthPayload { User = user, Token = token };
+    }
 }
