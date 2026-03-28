@@ -1,11 +1,12 @@
 namespace NoFreeLaunch.Api.GraphQL;
 
 using NoFreeLaunch.Api.Services;
-using NoFreeLaunch.Api.Data.Entities;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 public class AppMutations
 {
+    [Authorize]
     public async Task<bool> DeleteUserAsync(
             string userName,
             [Service] IUsersService users,
@@ -15,6 +16,7 @@ public class AppMutations
         return true;
     }
 
+    [Authorize]
     public async Task<bool> AddFavoriteAsync(
         string launchId,
         ClaimsPrincipal user,
@@ -26,6 +28,7 @@ public class AppMutations
         return true;
     }
 
+    [Authorize]
     public async Task<bool> RemoveFavoriteAsync(
         string launchId,
         ClaimsPrincipal user,
@@ -47,6 +50,7 @@ public class AppMutations
         return new AuthPayload { User = user, Token = token };
     }
 
+    [AllowAnonymous]
     public async Task<AuthPayload> LoginAsync(
         string userName,
         string password,
