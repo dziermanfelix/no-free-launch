@@ -40,6 +40,7 @@ public class AppMutations
         return true;
     }
 
+    [AllowAnonymous]
     public async Task<AuthPayload> RegisterAsync(
         string userName,
         string password,
