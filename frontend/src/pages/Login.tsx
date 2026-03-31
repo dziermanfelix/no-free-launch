@@ -1,0 +1,63 @@
+import { useState, type SubmitEvent } from 'react';
+import './Login.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client/react';
+import { LOGIN } from '../graphql/mutations';
+
+export default function Login() {
+  const [login] = useMutation(LOGIN);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const submitForm = async (e: SubmitEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await login({ variables: { username, password } });
+      navigate('/');
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Login</h1>
+
+      <form onSubmit={submitForm}>
+        <div>
+          <label htmlFor='username'>Username</label>
+          <input id='username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} required />
+        </div>
+        <div>
+          <label htmlFor='password'>Password</label>
+          <input
+            id='password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type='submit' disabled={isSubmitting}>
+          Login
+        </button>
+      </form>
+
+      {error && <div className='error'>{error}</div>}
+
+      <div>
+        <p>
+          Don't have an account? <Link to='/register'>Register</Link>
+        </p>
+      </div>
+    </div>
+  );
+}
