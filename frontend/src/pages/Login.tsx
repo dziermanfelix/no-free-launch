@@ -3,21 +3,28 @@ import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client/react';
 import { LOGIN } from '../graphql/mutations';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [login] = useMutation(LOGIN);
+  const auth = useAuth();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const submitForm = async (e: SubmitEvent) => {
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
     try {
-      await login({ variables: { username, password } });
+      const res = await login({ variables: { username, password } });
+      const payload = (res.data as any)?.login;
+      if (!payload?.user || !payload?.token) {
+        throw new Error('Login failed: missing user/token');
+      }
+      auth.login(payload.user, payload.token);
       navigate('/');
     } catch (error: any) {
       setError(error.message);

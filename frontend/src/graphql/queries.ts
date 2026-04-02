@@ -1,5 +1,14 @@
 import { gql } from '@apollo/client';
 
+export const ME = gql`
+  query Me {
+    me {
+      id
+      userName
+    }
+  }
+`;
+
 export const GET_LAUNCHES = gql`
   query GetLaunches {
     launches {
@@ -34,8 +43,8 @@ export const GET_LAUNCH_BY_FLIGHT_NUMBER = gql`
 `;
 
 export const GET_FAVORITES = gql`
-  query GetFavorites($userId: Int!) {
-    favorites(userId: $userId) {
+  query GetFavorites {
+    favorites {
       id
       launchId
       userId
@@ -55,7 +64,7 @@ export const GET_USERS = gql`
 
 export const GET_USER_BY_NAME = gql`
   query GetUserByName($userName: String!) {
-    user(userByName: $userName) {
+    userByName(userName: $userName) {
       id
       userName
     }

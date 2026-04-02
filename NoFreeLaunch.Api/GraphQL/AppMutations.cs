@@ -1,8 +1,8 @@
-namespace NoFreeLaunch.Api.GraphQL;
-
 using NoFreeLaunch.Api.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+
+namespace NoFreeLaunch.Api.GraphQL;
 
 public class AppMutations
 {

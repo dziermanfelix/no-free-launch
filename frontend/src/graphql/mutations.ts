@@ -6,8 +6,6 @@ export const REGISTER = gql`
       user {
         id
         userName
-        passwordHash
-        createdAt
       }
       token
     }
@@ -20,8 +18,6 @@ export const LOGIN = gql`
       user {
         id
         userName
-        passwordHash
-        createdAt
       }
       token
     }
@@ -35,13 +31,13 @@ export const DELETE_USER = gql`
 `;
 
 export const ADD_FAVORITE = gql`
-  mutation AddFavorite($launchId: String!, $userId: Int!) {
-    addFavorite(launchId: $launchId, userId: $userId)
+  mutation AddFavorite($launchId: String!) {
+    addFavorite(launchId: $launchId)
   }
 `;
 
 export const REMOVE_FAVORITE = gql`
-  mutation RemoveFavorite($launchId: String!, $userId: Int!) {
-    removeFavorite(launchId: $launchId, userId: $userId)
+  mutation RemoveFavorite($launchId: String!) {
+    removeFavorite(launchId: $launchId)
   }
 `;

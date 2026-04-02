@@ -1,11 +1,14 @@
 import { useState, type SubmitEvent } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client/react';
 import { REGISTER } from '../graphql/mutations';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Register() {
+  const navigate = useNavigate();
   const [register] = useMutation(REGISTER);
+  const auth = useAuth();
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
@@ -17,7 +20,13 @@ export default function Register() {
     setError('');
     setIsSubmitting(true);
     try {
-      await register({ variables: { username, password } });
+      const res = await register({ variables: { username, password } });
+      const payload = (res.data as any)?.register;
+      if (!payload?.user || !payload?.token) {
+        throw new Error('Register failed: missing user/token');
+      }
+      auth.login(payload.user, payload.token);
+      navigate('/');
     } catch (error: any) {
       setError(error.message);
     } finally {

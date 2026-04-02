@@ -51,4 +51,17 @@ public class AppQueries
         CancellationToken cancellationToken)
         => await users.GetUserByNameAsync(userName, cancellationToken);
 
+    [Authorize]
+    public async Task<User?> GetMeAsync(
+        ClaimsPrincipal user,
+        [Service] NoFreeLaunchDbContext context,
+        CancellationToken cancellationToken)
+    {
+        var userIdValue = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(userIdValue, out var userId))
+            return null;
+
+        return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+    }
+
 }
