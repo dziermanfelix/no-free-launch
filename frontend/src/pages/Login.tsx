@@ -7,12 +7,12 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [login] = useMutation(LOGIN);
-  const auth = useAuth();
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const auth = useAuth();
+  const [login] = useMutation(LOGIN);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const submitForm = async (e: SubmitEvent) => {
     e.preventDefault();
@@ -38,11 +38,11 @@ export default function Login() {
       <h1>Login</h1>
 
       <form onSubmit={submitForm}>
-        <div>
+        <div className='row'>
           <label htmlFor='username'>Username</label>
           <input id='username' type='text' value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
-        <div>
+        <div className='row'>
           <label htmlFor='password'>Password</label>
           <input
             id='password'
