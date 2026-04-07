@@ -1,21 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { User } from '../types/user';
 import { useQuery } from '@apollo/client/react';
-import {
-  getStoredToken,
-  getStoredUser,
-  removeStoredToken,
-  removeStoredUser,
-  setStoredToken,
-  setStoredUser,
-} from '../util/token';
+import { getStoredToken, removeStoredToken, setStoredToken } from '../util/token';
 import { ME } from '../graphql/queries';
 
 type AuthContextValue = {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (user: User, token: string) => void;
   logout: () => void;
 };
@@ -26,70 +20,61 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const { data, error } = useQuery<{ me: User | null }>(ME, {
+  const [token, setToken] = useState<string | null>(() => getStoredToken());
+
+  const {
+    data,
+    error,
+    loading: isLoading,
+  } = useQuery(ME, {
     skip: !token,
     fetchPolicy: 'network-only',
   });
 
   useEffect(() => {
-    const storedToken = getStoredToken();
-    const storedUser = getStoredUser();
-
-    if (!storedToken) return;
-
-    setToken(storedToken);
-
-    if (storedUser) {
-      try {
-        const parsedUser: User = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch {
-        removeStoredUser();
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!token) return;
-
-    if (error || (data && !data.me)) {
+    if (!token) {
       setUser(null);
-      setToken(null);
-      removeStoredToken();
-      removeStoredUser();
       return;
     }
 
-    if (data?.me) {
-      setUser(data.me);
-      setStoredUser(data.me);
+    const me = (data as any)?.me as User | null | undefined;
+    if (me) {
+      setUser(me);
+      return;
     }
-  }, [token, data, error]);
+    
+    if (error || (data && !me)) {
+      setUser(null);
+      setToken(null);
+      removeStoredToken();
+    }
+  }, [data, error, token]);
 
   const login = (user: User, token: string) => {
-    setUser(user);
     setToken(token);
     setStoredToken(token);
-    setStoredUser(user);
+    setUser(user);
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
     removeStoredToken();
-    removeStoredUser();
   };
 
-  const value: AuthContextValue = {
-    user,
-    token,
-    isAuthenticated: !!token,
-    login,
-    logout,
-  };
+  const value: AuthContextValue = useMemo(
+    () => ({
+      user,
+      token,
+      isAuthenticated: !!token,
+      isLoading: !!token && isLoading,
+      login,
+      logout,
+    }),
+    [user, token, isLoading],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
