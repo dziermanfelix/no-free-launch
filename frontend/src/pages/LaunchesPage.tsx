@@ -3,9 +3,11 @@ import Launches from '../components/Launches';
 
 export default function LaunchesPage() {
   return (
-    <div>
+    <div className='launches-page'>
       <h1>Launches</h1>
-      <Launches />
+      <div className='launches-page-scroll'>
+        <Launches />
+      </div>
     </div>
   );
 }

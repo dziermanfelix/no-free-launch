@@ -5,6 +5,7 @@ import Launch from './components/Launch';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Layout } from './components/Layout';
 
 function App() {
   return (
@@ -13,10 +14,12 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/launches' element={<LaunchesPage />} />
-          <Route path='/launch/:id' element={<Launch />} />
-          <Route path='/launch/number/:flightNumber' element={<Launch />} />
+          <Route element={<Layout />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/launches' element={<LaunchesPage />} />
+            <Route path='/launch/:id' element={<Launch />} />
+            <Route path='/launch/number/:flightNumber' element={<Launch />} />
+          </Route>
         </Route>
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>

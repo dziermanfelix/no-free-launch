@@ -1,0 +1,44 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@supports (height: 100dvh) {
+  .layout {
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+.layout-header,
+.layout-footer {
+  flex: 0 0 auto;
+  padding: 0.75rem 1rem;
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+.layout-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.layout-footer {
+  border-top: 1px solid var(--border);
+}
+
+.layout-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}

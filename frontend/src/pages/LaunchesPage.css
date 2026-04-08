@@ -1,0 +1,19 @@
+.launches-page {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  width: 100%;
+}
+
+.launches-page h1 {
+  flex: 0 0 auto;
+}
+
+.launches-page-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  width: 100%;
+}
