@@ -3,7 +3,8 @@ using NoFreeLaunch.Api.Data;
 using NoFreeLaunch.Api.Data.Entities;
 using NoFreeLaunch.Api.Services;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using HotChocolate.Authorization;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace NoFreeLaunch.Api.GraphQL;
 
@@ -22,6 +23,7 @@ public class AppQueries
         CancellationToken cancellationToken)
         => await context.Launches.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
 
+    [AllowAnonymous]
     public async Task<Launch?> GetLaunchByFlightNumberAsync(
         int flightNumber,
         [Service] NoFreeLaunchDbContext context,

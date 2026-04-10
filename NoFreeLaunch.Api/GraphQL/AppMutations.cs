@@ -1,6 +1,7 @@
 using NoFreeLaunch.Api.Services;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using HotChocolate.Authorization;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace NoFreeLaunch.Api.GraphQL;
 

@@ -67,6 +67,7 @@ builder.Services
 .AddGraphQLServer()
 .AddQueryType<AppQueries>()
 .AddMutationType<AppMutations>()
+.AddAuthorization()
 .AddErrorFilter<ExceptionMessageErrorFilter>()
 .ModifyRequestOptions(o => o.IncludeExceptionDetails = builder.Environment.IsDevelopment());
 
