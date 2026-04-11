@@ -4,13 +4,13 @@ import { GET_FAVORITES, GET_LAUNCHES } from '../graphql/queries';
 import type { GetFavoritesData, GetLaunchesData } from '../types/graphql';
 import { formatDateString } from '../util/date';
 import { ADD_FAVORITE, REMOVE_FAVORITE } from '../graphql/mutations';
+import { useAuth } from '../contexts/useAuth';
 
 export default function Launches() {
+  const { token } = useAuth();
   const { data, loading, error } = useQuery<GetLaunchesData>(GET_LAUNCHES);
-  // TODO get current user from context
-  const userId = 1;
   const { data: favoritesData, refetch: refetchFavorites } = useQuery<GetFavoritesData>(GET_FAVORITES, {
-    variables: { userId },
+    skip: !token,
   });
   const [addFavorite] = useMutation(ADD_FAVORITE);
   const [removeFavorite] = useMutation(REMOVE_FAVORITE);
@@ -18,10 +18,11 @@ export default function Launches() {
   const launches = data?.launches || [];
 
   const handleFavoriteChange = async (launchId: string, checked: boolean) => {
+    if (!token) return;
     if (checked) {
-      await addFavorite({ variables: { launchId, userId } });
+      await addFavorite({ variables: { launchId } });
     } else {
-      await removeFavorite({ variables: { launchId, userId } });
+      await removeFavorite({ variables: { launchId } });
     }
     void refetchFavorites();
   };
@@ -38,6 +39,8 @@ export default function Launches() {
               <input
                 className='launches-fav'
                 type='checkbox'
+                disabled={!token}
+                title={token ? undefined : 'Sign in to save favorites'}
                 checked={favorites.some((f) => f.launchId === launch.id)}
                 onChange={(e) => void handleFavoriteChange(launch.id, e.target.checked)}
               />

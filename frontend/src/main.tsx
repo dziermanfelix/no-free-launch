@@ -4,7 +4,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { apolloClient } from './apolloClient';
 import './index.css';
 import App from './App.tsx';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthProvider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
